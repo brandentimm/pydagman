@@ -38,7 +38,7 @@ class Job:
         self.parents = []
         self.pre = []
         self.post = []
-        self.retry = 0
+        self.num_retries = 0
 
     def add_var(self, name, value):
         """Add a VARS directive for this job
@@ -89,7 +89,7 @@ class Job:
         num_retries (int): Number of times to retry the job
 
         """
-        self.retry = num_retries
+        self.num_retries = num_retries
 
 class DuplicateParentError(Exception):
     """Thrown if attempting to add a parent that is already in the parents list"""

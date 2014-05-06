@@ -54,8 +54,8 @@ class Dagfile:
                     dagfile.write('SCRIPT POST %s %s\n' % (job.name, ' '.join(job.post)))
                 for key in job.vars:
                     dagfile.write('VARS %s %s="%s"\n' % (job.name, key, job.vars[key]))
-                if job.retry:
-                    dagfile.write('RETRY %s %d\n' % (job.name, job.retry))
+                if job.num_retries:
+                    dagfile.write('RETRY %s %d\n' % (job.name, job.num_retries))
                 dagfile.write('\n')
             # Next print out the parent/child relationships - these must come after all jobs are defined
             for job in self.jobs:
