@@ -53,7 +53,7 @@ Dagfile.add\_job also checks for circular dependencies and throws CircularDepend
 job3 = Job('job3.submit')
 job4 = Job('job4.submit')
 job3.add_parent(job4)
-job4.add_parent(job3) # We now have a circular dependency between job3 and job4, but they are not checked until the jobs                        # are added to the dagfile
+job4.add_parent(job3) # We now have a circular dependency between job3 and job4, but they are not checked until the jobs are added to the dagfile
 mydag.add_job(job3) # No error here, since we've only added job3 to the dagfile so far
 mydag.add_job(job4) # Now CircularDependencyError is thrown, because job3 already specified job4 as it's parent
 ```
