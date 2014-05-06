@@ -62,13 +62,78 @@ The state of a job is saved to the dagfile object when add_job is called.  There
 ```python
 job5 = Job('job5.submit')
 mydag.add_job(job5)
-job5.add_var('mem', '20G') # This has no affect since job5 was already added to the dagfile.
+job5.add
+
+Example with output
+-------------------
+```python
+# my_workflow.py
+from pydagman.dagfile import Dagfile
+from pydagman.job import Job
+
+mydag = Dagfile()
+
+job1 = Job('job1.submit', 'JOB1')
+job1.add_var('mem', '20G')
+job1.add_var('cpus', '12')
+job1.retry(4)
+mydag.add_job(job1)
+
+job2 = Job('job2.submit', 'JOB2')
+job2.add_var('mem', '4G')
+job2.add_var('cpus', '2')
+job2.retry(2)
+job2.add_parent(job1)
+mydag.add_job(job2)
+
+job3 = Job('job3.submit', 'JOB3')
+job3.add_pre('job3_pre.sh', '/tmp/JOB2', '/tmp/JOB3')
+job3.add_var('mem', '4G')
+job3.add_var('cpus', '2')
+job3.retry(2)
+job3.add_parent(job2)
+mydag.add_job(job3)
+
+job4 = Job('job4.submit', 'JOB4')
+job4.add_pre('job4_pre.sh', '/tmp/JOB2', '/tmp/JOB4')
+job4.add_var('mem', '4G')
+job4.add_var('cpus', '2')
+job4.retry(2)
+job4.add_parent(job2)
+mydag.add_job(job4)
+
+mydag.save('my_workflow.dag')
 ```
 
-Finally, save the dagfile to the filesystem using Dagfile.save()
-```python
-mydag.save('myworkflow.dag')
 ```
+# my_workflow.dag
+JOB JOB1 job1.submit
+VARS JOB1 mem="20G"
+VARS JOB1 cpus="12"
+RETRY JOB1 4
+
+JOB JOB2 job2.submit
+VARS JOB2 mem="4G"
+VARS JOB2 cpus="2"
+RETRY JOB2 2
+
+JOB JOB3 job3.submit
+SCRIPT PRE JOB3 job3_pre.sh /tmp/JOB2 /tmp/JOB3
+VARS JOB3 mem="4G"
+VARS JOB3 cpus="2"
+RETRY JOB3 2
+
+JOB JOB4 job4.submit
+SCRIPT PRE JOB4 job4_pre.sh /tmp/JOB2 /tmp/JOB4
+VARS JOB4 mem="4G"
+VARS JOB4 cpus="2"
+RETRY JOB4 2
+
+PARENT JOB1 CHILD JOB2
+PARENT JOB2 CHILD JOB3
+PARENT JOB2 CHILD JOB4
+```
+
 
 TODO
 ----
