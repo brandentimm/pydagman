@@ -62,7 +62,7 @@ The state of a job is saved to the dagfile object when add_job is called.  There
 ```python
 job5 = Job('job5.submit')
 mydag.add_job(job5)
-job5.add
+job5.add_var('mem', '20G') # This has no effect since the job was already added to the dagfile object
 ```
 
 Example with output
