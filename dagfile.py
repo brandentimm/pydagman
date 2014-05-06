@@ -1,9 +1,9 @@
 """
-py-dagman.dagfile
+pydagman.dagfile
 Provides the dagfile class to represent a DAGman file
 Classes:
 Dagfile: Represents a DAGman file
-InvalidJobObjectError: Thrown when add_job is called with an invalid py-dagman.job.Job object
+InvalidJobObjectError: Thrown when add_job is called with an invalid pydagman.job.Job object
 CircularDependencyError: Thrown when add_job would result in a circular dependency because
 the new_job already has the existing job as a parent
 """
@@ -14,7 +14,7 @@ class Dagfile:
     """
     Class to represent a DAGman file
     Attributes:
-    jobs (list[py-dagman.job.Job]): A list of py-dagman.job.Job objects
+    jobs (list[pydagman.job.Job]): A list of Job objects
     """
     def __init__(self):
         """
@@ -27,9 +27,9 @@ class Dagfile:
         """
         Add a job to the Dagfile object
         Args:
-        new_job (py-dagman.job.Job): The Job object to add
+        new_job (pydagman.job.Job): The Job object to add
         Raises:
-        InvalidJobObjectError: if new_job is not a valid py-dagman.job.Job object
+        InvalidJobObjectError: if new_job is not a valid Job object
         """
         if isinstance(new_job, job.Job) is not True:
             raise InvalidJobObjectError("Error in Dagman.add_job", new_job)
@@ -65,7 +65,7 @@ class Dagfile:
     def __dependency_check(self, new_job):
         """Check for circular dependencies
          Args:
-         new_job (py-dagman.job.Job): Job to add to the Dagfile object
+         new_job (pydagman.job.Job): Job to add to the Dagfile object
          Raises:
          CircularDependencyError: if adding the job would create a circular dependency
         """
@@ -77,7 +77,7 @@ dagman.__dependency_check: Jobs %s and %s have a circular dependency." \
 
 
 class InvalidJobObjectError(Exception):
-    """Error if trying to add a job that is not a valid py-dagman.job.Job object"""
+    """Error if trying to add a job that is not a valid pydagman.job.Job object"""
     def __init__(self, msg, obj):
         self.msg = msg
         self.obj = obj

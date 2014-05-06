@@ -1,5 +1,5 @@
 """
-py-dagman.job
+pydagman.job
 Provides the Job class to represent a Condor job to be submitted via DAGman
 Classes:
 Job: Represent a DAGman Condor job
@@ -22,7 +22,7 @@ class Job:
     """
     def __init__(self, submit_file, name=''):
         """
-        Create a new py-dagman.Job object
+        Create a new pydagman.Job object
 
         Arguments:
         submit_file (string): The full path to the Condor submit file for this job
