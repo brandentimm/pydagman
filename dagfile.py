@@ -14,6 +14,7 @@ class Dagfile:
     Class to represent a DAGman file
     Attributes:
     jobs (list[pydagman.job.Job]): A list of Job objects
+    maxjobs (dict): A dictionary of category to num_maxjobs mappings
     """
     def __init__(self):
         """
@@ -21,6 +22,7 @@ class Dagfile:
         :rtype : object
         """
         self.jobs = []
+        self.maxjobs = {}
 
     def add_job(self, new_job):
         """
@@ -37,6 +39,14 @@ class Dagfile:
         except Exception as e:
             raise(e)
         self.jobs.append(new_job)
+
+    def set_maxjobs(self, category, maxjobs):
+        """Set the number of maximum jobs for a category
+        Args:
+        category: Category name to set maximum number of jobs for
+        maxjobs: Number of maximum jobs to run in the category
+        """
+        self.maxjobs[category] = maxjobs
 
     def save(self, filename):
         """Save the dagfile to a provided path
@@ -59,11 +69,17 @@ class Dagfile:
                     dagfile.write('VARS %s %s="%s"\n' % (job.name, key, job.vars[key]))
                 if job.num_retries:
                     dagfile.write('RETRY %s %d\n' % (job.name, job.num_retries))
+                if job.categories:
+                    for category in job.categories:
+                        dagfile.write('CATEGORY %s %s\n' % (job.name, category))
                 dagfile.write('\n')
             # Next print out the parent/child relationships - these must come after all jobs are defined
             for job in self.jobs:
                 for parent in job.parents:
                     dagfile.write('PARENT %s CHILD %s\n' % (parent, job.name))
+            dagfile.write('\n')
+            for category in self.maxjobs:
+                dagfile.write('MAXJOBS %s %d\n' % (category, self.maxjobs[category]))
 
     def __dependency_check(self, new_job):
         """Check for circular dependencies

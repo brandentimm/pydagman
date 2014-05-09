@@ -63,6 +63,13 @@ job4.add_parent(job3) # We now have a circular dependency between job3 and job4,
 mydag.add_job(job3) # No error here, since we've only added job3 to the dagfile so far
 mydag.add_job(job4) # Now CircularDependencyError is thrown, because job3 already specified job4 as it's parent
 ```
+You can use job.Job.add_category and dagfile.Dagfile.set_maxjobs to control the number of concurrent jobs in any category
+```python
+job3 = Job('job3.submit')
+job3.add_category("BigCPU")
+mydag.add_job(job3)
+mydag.set_maxjobs("BigCPU", 24)
+```
 
 The state of a job is saved to the dagfile object when add_job is called.  Therefore, adding further attributes to a job (vars, pre/post, parent) after a job has already been added to a dagfile object will have no affect:
 ```python

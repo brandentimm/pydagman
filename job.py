@@ -39,6 +39,7 @@ class Job:
         self.pre = []
         self.post = []
         self.num_retries = 0
+        self.categories = []
         self.noop = False
 
     def add_var(self, name, value):
@@ -83,6 +84,14 @@ class Job:
         self.post.append(path)
         for index, arg in enumerate(args):
             self.post.append(arg)
+
+    def add_category(self, category):
+        """Add a category to this job.  Once done, dagman.dagfile.Dagfile.set_maxjobs
+        can be used to limit the number of jobs for a category
+        Args:
+        category (string): Name of the category
+        """
+        self.categories.append(category)
 
     def retry(self, num_retries):
         """Set the number of retries for this job
