@@ -47,7 +47,11 @@ class Dagfile:
         with open(filename, 'w') as dagfile:
             # First write out all of the job descriptions, including variables and pre/post scripts
             for job in self.jobs:
-                dagfile.write('JOB %s %s\n' % (job.name, job.submit_file))
+                job_string = 'JOB %s %s' % (job.name, job.submit_file)
+                if job.noop is not False:
+                    dagfile.write(job_string + ' NOOP\n')
+                else:
+                    dagfile.write(job_string + '\n')
                 if job.pre:
                     dagfile.write('SCRIPT PRE %s %s\n' % (job.name, ' '.join(job.pre)))
                 if job.post:

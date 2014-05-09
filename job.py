@@ -39,6 +39,7 @@ class Job:
         self.pre = []
         self.post = []
         self.num_retries = 0
+        self.noop = False
 
     def add_var(self, name, value):
         """Add a VARS directive for this job
