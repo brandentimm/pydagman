@@ -6,7 +6,7 @@ Job: Represent a DAGman Condor job
 DuplicateParentError: Exception thrown when trying to add a parent already in
 the parents list
 """
-from uuid import uuid4
+from shortuuid import uuid
 
 class Job:
     """
@@ -32,7 +32,7 @@ class Job:
         Yields:
         Job object
         """
-        self.name = name if name else uuid4()
+        self.name = name if name else uuid()
         self.submit_file = submit_file
         self.vars = {}
         self.parents = []
