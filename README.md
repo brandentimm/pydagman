@@ -155,6 +155,4 @@ Support the following advanced dagman directives:
 * PRE-SKIP
 * ABORT-DAG-ON
 * PRIORITY
-* CATEGORY
-* MAXJOBS
 * CONFIG
