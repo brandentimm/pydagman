@@ -7,8 +7,7 @@ InvalidJobObjectError: Thrown when add_job is called with an invalid pydagman.jo
 CircularDependencyError: Thrown when add_job would result in a circular dependency because
 the new_job already has the existing job as a parent
 """
-import job
-
+from pydagman.job import Job
 
 class Dagfile:
     """
@@ -31,7 +30,7 @@ class Dagfile:
         Raises:
         InvalidJobObjectError: if new_job is not a valid Job object
         """
-        if isinstance(new_job, job.Job) is not True:
+        if isinstance(new_job, Job) is not True:
             raise InvalidJobObjectError("Error in Dagman.add_job", new_job)
         try:
             self.__dependency_check(new_job)
