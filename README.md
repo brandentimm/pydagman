@@ -23,7 +23,7 @@ job1 = Job('job1.submit', 'job1')
 job1 = Job('job1.submit') # Job name will be automatically generated uuid
 ```
 
-The job.noop attribute controls whether the job is actually run or not.  Job.noop is False by default
+The Job.noop attribute controls whether the job is actually run or not.  Job.noop is False by default
 ```python
 job1 = Job('job1.submit')
 job1.noop = True
