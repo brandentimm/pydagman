@@ -41,6 +41,11 @@ job1.add_pre('pre_stage1.sh') # No additional arguments
 job1.add_post('post_stage1.sh', '/tmp/job1', '/tmp/job2') # Expands to 'post-stage1.sh /tmp/job1 /tmp/job2'
 ```
 
+Job.pre_skip will cause the entire node to complete successfully if the PRE script exits with the given exit code
+```python
+job1.pre_skip("1")
+```
+
 Of course we can also specify an arbitrary number of parent/child relationships between jobs.  Job.add\_parent ensures that the parent isn't already in the child job's parent list.  If it is, Job will throw DuplicateParentError.  The library could choose to just ignore the duplicate Job.add\_parent, but since it almost certainly indicates a logic issue with the program using this library we choose to fail early.
 ```python
 job2 = Job('job2.submit')

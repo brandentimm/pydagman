@@ -63,6 +63,8 @@ class Dagfile:
                     dagfile.write(job_string + '\n')
                 if job.pre:
                     dagfile.write('SCRIPT PRE %s %s\n' % (job.name, ' '.join(job.pre)))
+                if job.pre_skip_exit_code:
+                    dagfile.write('PRE_SKIP %s %s' % (job.name, job.pre_skip_exit_code))
                 if job.post:
                     dagfile.write('SCRIPT POST %s %s\n' % (job.name, ' '.join(job.post)))
                 for key in job.vars:

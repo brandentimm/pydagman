@@ -40,6 +40,7 @@ class Job:
         self.post = []
         self.num_retries = 0
         self.categories = []
+        self.pre_script_exit_code = ""
         self.noop = False
 
     def add_var(self, name, value):
@@ -100,6 +101,14 @@ class Job:
 
         """
         self.num_retries = num_retries
+
+    def pre_skip(self, exit_code):
+        """Skip the entire node if the PRE script returns this value
+        Args:
+        exit_code (string): Exit code to cause the node to skip
+        """
+        self.pre_skip_exit_code = exit_code
+
 
 class DuplicateParentError(Exception):
     """Thrown if attempting to add a parent that is already in the parents list"""
