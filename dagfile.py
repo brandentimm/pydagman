@@ -23,6 +23,7 @@ class Dagfile:
         """
         self.jobs = []
         self.maxjobs = {}
+        self.abort_conditions = []
 
     def add_job(self, new_job):
         """
@@ -48,6 +49,15 @@ class Dagfile:
         """
         self.maxjobs[category] = maxjobs
 
+    def abort_dag_on(self, job_name, exit_value, retcode=''):
+        """Abort the entire dag, removing all jobs, if a job returns the specified value
+        Args:
+        job_name (string): Name of the job
+        exit_value (string): Value to abort on
+        retcode (string, optional): Return code when aborting
+        """
+        self.abort_conditions.append({'job_name': job_name, 'exit_value': exit_value, 'retcode': retcode})
+
     def save(self, filename):
         """Save the dagfile to a provided path
         Args:
@@ -64,7 +74,7 @@ class Dagfile:
                 if job.pre:
                     dagfile.write('SCRIPT PRE %s %s\n' % (job.name, ' '.join(job.pre)))
                 if job.pre_skip_exit_code:
-                    dagfile.write('PRE_SKIP %s %s' % (job.name, job.pre_skip_exit_code))
+                    dagfile.write('PRE_SKIP %s %s\n' % (job.name, job.pre_skip_exit_code))
                 if job.post:
                     dagfile.write('SCRIPT POST %s %s\n' % (job.name, ' '.join(job.post)))
                 for key in job.vars:
@@ -82,6 +92,14 @@ class Dagfile:
             dagfile.write('\n')
             for category in self.maxjobs:
                 dagfile.write('MAXJOBS %s %d\n' % (category, self.maxjobs[category]))
+            for abort_condition in self.abort_conditions:
+                abort_string = 'ABORT-DAG-ON %s %s' % (abort_condition['job_name'], abort_condition['exit_value'])
+                if 'retcode' in abort_condition:
+                    abort_string += ' RETURN %s\n' % (abort_condition['retcode'])
+                else:
+                    abort_string += '\n'
+                dagfile.write(abort_string)
+
 
     def __dependency_check(self, new_job):
         """Check for circular dependencies

@@ -76,6 +76,13 @@ mydag.add_job(job3)
 mydag.set_maxjobs("BigCPU", 24)
 ```
 
+Dagfile.abort_dag_on adds conditions instruction DAGman to abort the entire workflow if the job returns a certain exit
+code.  An alternate return value can also be specified
+```python
+mydag.abort_dag_on(job3.name, "3")
+mydag.abort_dag_on(job3.name, "3", "1") # The return code for the dag workflow is now 1 instead of 3
+```
+
 The state of a job is saved to the dagfile object when add_job is called.  Therefore, adding further attributes to a job (vars, pre/post, parent) after a job has already been added to a dagfile object will have no affect:
 ```python
 job5 = Job('job5.submit')
