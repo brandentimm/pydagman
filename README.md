@@ -159,12 +159,3 @@ PARENT JOB1 CHILD JOB2
 PARENT JOB2 CHILD JOB3
 PARENT JOB2 CHILD JOB4
 ```
-
-
-TODO
-----
-Support the following advanced dagman directives:
-* PRE-SKIP
-* ABORT-DAG-ON
-* PRIORITY
-* CONFIG
